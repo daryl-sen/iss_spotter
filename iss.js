@@ -64,6 +64,13 @@ const fetchISSFlyOverTimes = function(coords, callback) {
       callback(error, null);
       return;
     }
+
+    // check response code
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching Geo Info. Response: ${body}`;
+      callback(msg, null); // Error() creates new error object to pass around
+      return;
+    }
   
     const returnedData = JSON.parse(body);
     if (returnedData.message === 'failure') {
@@ -85,7 +92,7 @@ const nextISSTimesForMyLocation = function(callback) {
   fetchMyIP( (error, IP) => {
     fetchCoordsByIP( IP, (error, coords) => {
       fetchISSFlyOverTimes( coords, (error, times) => {
-        callback(times);
+        callback(error, times);
         return;
       })
     })
@@ -93,9 +100,9 @@ const nextISSTimesForMyLocation = function(callback) {
 };
 
 
-nextISSTimesForMyLocation( (times) => {
-  console.log(times);
-});
+// nextISSTimesForMyLocation( (times) => {
+//   console.log(times);
+// });
 
 module.exports = {
   nextISSTimesForMyLocation

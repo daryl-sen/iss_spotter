@@ -3,13 +3,10 @@ const { nextISSTimesForMyLocation } = require('./iss');
 
 
 nextISSTimesForMyLocation((error, passTimes) => {
-  if (error) {
-    return console.log("It didn't work!", error);
+  for (let time of passTimes) {
+    // console.log(time);
+    console.log(`Next pass at ${Date(time.risetime)} for ${time.duration} seconds.`);
   }
-
-  
-  // success, print out the deets!
-  console.log(passTimes);
 });
 
 
